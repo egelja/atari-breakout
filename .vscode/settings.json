@@ -42,5 +42,9 @@
   "todo-tree.filtering.excludeGlobs": [
     "**/node_modules",
     "github/actions/spelling/allow.txt"
+  ],
+  "cSpell.words": [
+    "centerx",
+    "centery"
   ]
 }

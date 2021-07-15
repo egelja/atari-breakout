@@ -7,6 +7,7 @@ authors = ["Nino Maruszewski <nino.maruszewski@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 pygame = "~=2.0.1"
+coloredlogs = "^15.0.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
@@ -22,6 +23,7 @@ isort = "^5.9.2"
 pre-commit = "^2.13.0"
 black = "^21.6b0"
 taskipy = "^1.8.1"
+python-dotenv = "^0.18.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -6,7 +6,8 @@ import pygame
 from pygame import Surface
 from pygame.locals import *
 
-DATA_PATH = Path("data")
+MODULE_DIR = Path(__file__).resolve().parent
+DATA_DIR = MODULE_DIR / "data"
 
 log = logging.getLogger(__name__)
 
@@ -22,7 +23,7 @@ def load_image(name: str, colorkey: int = None) -> list[Surface, Rect]:
     Returns:
         list[Surface, Rect]: The image surface and its containing rectangle.
     """
-    path = DATA_PATH / name
+    path = DATA_DIR / name
     try:
         image = pygame.image.load(path)
     except Exception as e:
@@ -53,7 +54,7 @@ def load_sound(name: str) -> pygame.mixer.Sound:
     if not pygame.mixer:
         return NoneSound()
 
-    path = DATA_PATH / name
+    path = DATA_DIR / name
     try:
         sound = pygame.mixer.Sound(path)
     except Exception as e:

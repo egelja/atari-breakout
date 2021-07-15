@@ -3,6 +3,8 @@ import logging
 import pygame
 from pygame.locals import *
 
+from .utils import load_image
+
 log = logging.getLogger("main")
 
 if not pygame.font:
@@ -13,11 +15,12 @@ if not pygame.mixer:
 
 def main() -> None:
     """Run the program."""
-    # Pygame init
+    # Pygame and screen setup
     pygame.init()
     screen = pygame.display.set_mode((500, 500))
     pygame.display.set_caption("Atari Breakout")
-    pygame.mouse.set_visible(False)
+    icon, _ = load_image("atari_logo.png", -1)
+    pygame.display.set_icon(icon)
 
     # Background setup
     background = pygame.Surface(screen.get_size()).convert()
@@ -38,6 +41,10 @@ def main() -> None:
 
     # Display the background
     all_sprites.clear(screen, background)
+
+    # Grab the mouse (make this configurable later)
+    pygame.event.set_grab(True)
+    pygame.mouse.set_visible(False)
 
     # Main loop:
     running = True

@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "atari-breakout"
+version = "0.1.0"
+description = ""
+authors = ["Nino Maruszewski <nino.maruszewski@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pygame = "~=2.0.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+flake8 = "^3.9.2"
+flake8-annotations = "^2.6.2"
+flake8-bugbear = "^21.4.3"
+flake8-builtins = "^1.5.3"
+flake8-docstrings = "^1.6.0"
+flake8-import-order = "^0.18.1"
+flake8-tidy-imports = "^4.3.0"
+pep8-naming = "^0.12.0"
+isort = "^5.9.2"
+pre-commit = "^2.13.0"
+black = "^21.6b0"
+taskipy = "^1.8.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

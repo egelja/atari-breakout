@@ -1,11 +1,18 @@
 import logging
 import os
 import sys
+from distutils.util import strtobool
 from logging import Logger, handlers
 from pathlib import Path
 from typing import Any
 
 import coloredlogs
+
+TRACE_LEVEL = 5
+try:
+    DEBUG_MODE = strtobool(os.getenv("DEBUG", "False"))  # TODO: move to constants file?
+except ValueError:
+    DEBUG_MODE = False
 
 
 class StreamToLogger:
@@ -40,8 +47,13 @@ class StreamToLogger:
 
 def setup() -> None:
     """Set up loggers."""
-    log_level = logging.DEBUG if os.getenv("DEBUG") else logging.INFO
-    format_string = "%(asctime)s | %(name)s | %(levelname)s | %(message)s"
+    logging.TRACE = TRACE_LEVEL
+    logging.addLevelName(TRACE_LEVEL, "TRACE")
+    Logger.trace = _monkeypatch_trace
+
+    # TODO: verbose logging
+    log_level = TRACE_LEVEL if DEBUG_MODE else logging.INFO
+    format_string = "%(asctime)s | %(name)-20s | %(levelname)-7s | %(message)s"
     log_format = logging.Formatter(format_string)
 
     log_file = Path("logs", "game.log")
@@ -58,8 +70,9 @@ def setup() -> None:
     if "COLOREDLOGS_LEVEL_STYLES" not in os.environ:
         coloredlogs.DEFAULT_LEVEL_STYLES = {
             **coloredlogs.DEFAULT_LEVEL_STYLES,
-            "debug": {"color": 246},
+            "trace": {"color": 246},
             "critical": {"background": "red"},
+            "debug": coloredlogs.DEFAULT_LEVEL_STYLES["info"],
         }
 
     if "COLOREDLOGS_LOG_FORMAT" not in os.environ:
@@ -77,3 +90,15 @@ def setup() -> None:
 
     stderr_logger = logging.getLogger("STDERR")
     sys.stderr = StreamToLogger(stderr_logger, logging.ERROR)
+
+
+def _monkeypatch_trace(self: logging.Logger, msg: str, *args, **kwargs) -> None:
+    """
+    Log 'msg % args' with severity 'TRACE'.
+
+    To pass exception information, use the keyword argument exc_info with
+    a true value, e.g.
+    logger.trace("Houston, we have an %s", "interesting problem", exc_info=1)
+    """
+    if self.isEnabledFor(TRACE_LEVEL):
+        self._log(TRACE_LEVEL, msg, args, **kwargs)

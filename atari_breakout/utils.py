@@ -6,10 +6,14 @@ import pygame
 from pygame import Surface
 from pygame.locals import *
 
+log = logging.getLogger(__name__)
+
 MODULE_DIR = Path(__file__).resolve().parent
 DATA_DIR = MODULE_DIR / "data"
 
-log = logging.getLogger(__name__)
+log.trace(f"__file__: {__file__}")
+log.trace(f"MODULE_DIR: {MODULE_DIR}")
+log.trace(f"DATA_DIR: {DATA_DIR}")
 
 
 def load_image(name: str, colorkey: int = None) -> list[Surface, Rect]:
@@ -24,6 +28,8 @@ def load_image(name: str, colorkey: int = None) -> list[Surface, Rect]:
         list[Surface, Rect]: The image surface and its containing rectangle.
     """
     path = DATA_DIR / name
+    log.debug(f"Loading image data/{name}")
+    log.trace(f"Image path: {path}")
     try:
         image = pygame.image.load(path)
     except Exception as e:
@@ -52,9 +58,12 @@ def load_sound(name: str) -> pygame.mixer.Sound:
             pass
 
     if not pygame.mixer:
+        log.debug(f"Mixer not init-ed, replacing sound {name} with an empty wrapper.")
         return NoneSound()
 
     path = DATA_DIR / name
+    log.debug(f"Loading sound data/{name}")
+    log.trace(f"Sound path: {path}")
     try:
         sound = pygame.mixer.Sound(path)
     except Exception as e:

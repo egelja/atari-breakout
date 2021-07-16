@@ -5,19 +5,22 @@ from pygame.locals import *
 
 from .utils import load_image
 
-log = logging.getLogger("main")
+log = logging.getLogger("atari_breakout.main")
 
 if not pygame.font:
-    log.warn("Warning, fonts disabled")
+    log.warning("Warning, fonts disabled")
 if not pygame.mixer:
-    log.warn("Warning, sound disabled")
+    log.warning("Warning, sound disabled")
 
 
 def main() -> None:
     """Run the program."""
     # Pygame and screen setup
+    log.info("Starting game setup!")
     pygame.init()
     screen = pygame.display.set_mode((500, 500))
+
+    # Window setup
     pygame.display.set_caption("Atari Breakout")
     icon, _ = load_image("atari_logo.png", -1)
     pygame.display.set_icon(icon)
@@ -42,11 +45,13 @@ def main() -> None:
     # Display the background
     all_sprites.clear(screen, background)
 
-    # Grab the mouse (make this configurable later)
+    # Grab the mouse
+    # TODO: make this configurable later, or add a menu
     pygame.event.set_grab(True)
     pygame.mouse.set_visible(False)
 
     # Main loop:
+    log.info("Setup complete, starting Atari Breakout!")
     running = True
     while running:
         clock.tick(60)  # 60 FPS max
@@ -73,6 +78,7 @@ def main() -> None:
         pygame.display.update(to_update)
 
     # Game over
+    log.warning("Received quit signal, now closing gracefully.")
     pygame.quit()
 
 

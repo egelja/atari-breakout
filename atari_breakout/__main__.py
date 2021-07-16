@@ -22,7 +22,7 @@ def main() -> None:
 
     # Window setup
     pygame.display.set_caption("Atari Breakout")
-    icon, _ = load_image("atari_logo.png", -1)
+    icon, _ = load_image("atari_logo.png")
     pygame.display.set_icon(icon)
 
     # Background setup
